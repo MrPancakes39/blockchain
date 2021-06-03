@@ -33,7 +33,6 @@ class Blockchain:
         else:
             raise ValueError('Invalid URL')
 
-
     def valid_chain(self, chain):
         """
         Determine if a given blockchain is valid
@@ -160,7 +159,7 @@ class Blockchain:
 
          - Find a number p' such that hash(pp') contains leading 4 zeroes
          - Where p is the previous proof, and p' is the new proof
-         
+
         :param last_block: <dict> last Block
         :return: <int>
         """
@@ -239,7 +238,8 @@ def new_transaction():
         return 'Missing values', 400
 
     # Create a new Transaction
-    index = blockchain.new_transaction(values['sender'], values['recipient'], values['amount'])
+    index = blockchain.new_transaction(
+        values['sender'], values['recipient'], values['amount'])
 
     response = {'message': f'Transaction will be added to Block {index}'}
     return jsonify(response), 201
@@ -272,7 +272,7 @@ def register_nodes():
     return jsonify(response), 201
 
 
-@app.route('/nodes/resolve', methods=['GET'])
+@app.route('/nodes/resolve/', methods=['GET'])
 def consensus():
     replaced = blockchain.resolve_conflicts()
 
@@ -294,7 +294,8 @@ if __name__ == '__main__':
     from argparse import ArgumentParser
 
     parser = ArgumentParser()
-    parser.add_argument('-p', '--port', default=5000, type=int, help='port to listen on')
+    parser.add_argument('-p', '--port', default=5000,
+                        type=int, help='port to listen on')
     args = parser.parse_args()
     port = args.port
 
