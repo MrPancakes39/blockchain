@@ -1,10 +1,8 @@
-# Are you looking for the source code for my book?
+# What is blockchain?
 
-Please find it here: https://github.com/dvf/blockchain-book
+A blockchain, originally block chain, is a growing list of records, called blocks, that are linked using cryptography. Each block contains a cryptographic hash of the previous block, a timestamp, and transaction data. By design, a blockchain is resistant to modification of the data.
 
-The book is available on Amazon: https://www.amazon.com/Learn-Blockchain-Building-Understanding-Cryptocurrencies/dp/1484251709
-
-# Learn Blockchains by Building One
+# Learn Blockchains by Building One
 
 [![Build Status](https://travis-ci.org/dvf/blockchain.svg?branch=master)](https://travis-ci.org/dvf/blockchain)
 
@@ -13,21 +11,62 @@ This is the source code for my post on [Building a Blockchain](https://medium.co
 ## Installation
 
 1. Make sure [Python 3.6+](https://www.python.org/downloads/) is installed. 
-2. Install [pipenv](https://github.com/kennethreitz/pipenv). 
-
+2. Install requirements.
+```
+$ pip install -r requirements.txt
+```
+3. Install [pipenv](https://github.com/kennethreitz/pipenv). 
 ```
 $ pip install pipenv 
 ```
-3. Install requirements  
+4. Install enviroment requirements  
 ```
 $ pipenv install 
 ``` 
 
-4. Run the server:
+5. Run the server:
     * `$ pipenv run python blockchain.py` 
     * `$ pipenv run python blockchain.py -p 5001`
     * `$ pipenv run python blockchain.py --port 5002`
-    
+
+6. Start Mining
+```
+$ curl http://0.0.0.0:5000/mine
+```
+7. Start a Transaction.
+```
+$ curl -H "Content-Type: application/json" \
+   -d '{"sender": "sender_name",
+        "recipient": "recipient_name",
+        "amount": "amount"}' \
+   -X POST http://0.0.0.0:5000/transactions/new
+
+Output:
+{
+  "message": "Transaction will be added to Block 3"
+}
+```
+9. Registering a node and Resolve chain:
+```
+$ curl -H "Content-Type: application/json" \
+  -d '{"nodes": ["http://0.0.0.0:5000/"]}' \
+  -X POST http://0.0.0.0:5000/nodes/register
+
+Output:
+{
+  "message": "New nodes have been added", 
+  "total_nodes": [
+    "0.0.0.0:5000"
+  ]
+}
+
+$ curl http://0.0.0.0:5000/nodes/resolve/
+```
+10. Get entire chain.
+```
+$ curl http://0.0.0.0:5000/chain
+```
+
 ## Docker
 
 Another option for running this blockchain program is to use Docker.  Follow the instructions below to create a local Docker container:
